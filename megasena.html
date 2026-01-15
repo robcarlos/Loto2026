@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+    <meta name="theme-color" content="#006341"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mega-Sena — Mestre da Loteria – Sorte Certa</title>
+  <link rel="icon" type="image/png" href="./assets/logo.png"/>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="bg-wealth" aria-hidden="true"></div>
+
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="./index.html" title="Voltar ao Início">
+      <span class="brand-mark"><img src="./assets/logo.png" alt="Mestre da Loteria" width="120" height="120"/></span>
+      <span class="brand-text">
+        <span class="brand-title">Mestre da Loteria</span>
+        <span class="brand-sub">Sorte Certa</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-nav">☰</button>
+
+    <nav id="site-nav" class="site-nav">
+      <a href="./index.html">🏠 Início</a>
+      <a href="./megasena.html">🎰 Mega-Sena</a>
+      <a href="./lotofacil.html">🍀 Lotofácil</a>
+      <a href="./estatisticas.html">📊 Estatísticas</a>
+      <a href="./jogos.html">🗃️ Meus Jogos</a>
+      <a href="./contato.html">✉️ Contato</a>
+    </nav>
+  </div>
+  <div class="tricolor-ribbon" aria-hidden="true"></div>
+</header>
+
+<main class="container page">
+    
+<section class="hero">
+  <div class="sparkle-layer" aria-hidden="true"></div>
+  <h2>🎰 Mega-Sena</h2>
+  <p class="muted">Range: <b>1–60</b> • Aposta: <b>6–15</b> • Selecione dezenas na grade (opcional) e gere sugestões premium.</p>
+</section>
+
+
+<div class="app-shell" style="margin-top:16px;">
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-title">🎰 Mega-Sena</div>
+      <div class="sidebar-sub muted">Ferramentas & análises</div>
+    </div>
+
+    <button class="side-link active" data-panel="ms_panel_generator">🎲 Gerador de Jogos</button>
+    <button class="side-link" data-panel="ms_panel_last">🕘 Últimos Resultados</button>
+    <button class="side-link" data-panel="ms_panel_desd">🧩 Desdobramentos</button>
+    <button class="side-link" data-panel="ms_panel_fech">🧠 Fechamentos</button>
+    <button class="side-link" data-panel="ms_panel_pos">🎯 Fechamentos por Faixas</button>
+    <button class="side-link" data-panel="ms_panel_mov">📈 Tabela de Movimentação</button>
+    <button class="side-link" data-panel="ms_panel_ind">🧾 Movimentação da Independência</button>
+    <button class="side-link" data-panel="ms_panel_cic">🔁 Ciclos Alternativos</button>
+    <button class="side-link" data-panel="ms_panel_easy">✨ Dezena Fácil</button>
+    <button class="side-link" data-panel="ms_panel_resumo">🧾 Tabela Resumida</button>
+
+    <div class="sidebar-sep"></div>
+
+    <button class="side-link" data-panel="ms_panel_pad">📊 Estatísticas dos Padrões</button>
+    <button class="side-link" data-panel="ms_panel_lin">🧮 Estatísticas das Linhas</button>
+    <button class="side-link" data-panel="ms_panel_col">🧱 Estatísticas das Colunas</button>
+
+    <div class="sidebar-foot muted">
+      Dica: use <b>Base</b> 100/200 e <b>Top 5</b> para curadoria sem travar.
+    </div>
+  </aside>
+
+  <div class="panels">
+    <section class="panel show" id="ms_panel_generator">
+      <div class="grid2" style="margin-top:16px;">
+  <section class="card" selection-premium">
+    <h3>1) Seleção (opcional)</h3>
+    <div class="row">
+      <div class="field" style="flex:1; min-width:260px;">
+        <label>Números selecionados</label>
+        <input id="ms_selected" readonly placeholder="Clique na grade para selecionar"/>
+      </div>
+      <button class="btn danger" id="ms_clearSel">Limpar seleção</button>
+    </div>
+
+<div class="steps" style="margin-top:12px;">
+  <button class="btn primary" id="ms_step1" type="button">1. Excluir até 5 dezenas</button>
+  <button class="btn" id="ms_step2" type="button">2. Marcar 5 quentes</button>
+  <button class="btn" id="ms_step3" type="button">3. Marcar repetidas (último concurso)</button>
+  <button class="btn gold" id="ms_step4" type="button">4. Completar seleção</button>
+  <span class="muted" style="margin-left:10px;">Dica: clique na grade para selecionar — no passo 1, o clique vira exclusão.</span>
+</div>
+    <div class="num-grid premium-grid" id="ms_grid" style="margin-top:12px;"></div>
+    <p class="muted" style="margin-top:10px;">Fixe alguns números, use os passos acima e o gerador completa o restante.</p>
+
+<div class="banner" style="margin-top:14px;">LIBERDADE E SUCESSO!</div>
+  </section>
+
+  <section class="card">
+    <h3>2) Geração de jogos</h3>
+    <p class="muted">Para análises (frequência, recência, top 10 e gráficos), use a página <a href="./estatisticas.html?game=megasena">Estatísticas</a>.</p>
+    <div class="row">
+      <div class="field"><label>Dezenas por jogo</label><input id="ms_k" type="number" min="6" max="15" value="6"/></div>
+      <div class="field"><label>Qtd. de jogos</label><input id="ms_qtd" type="number" min="1" max="200" value="10"/></div>
+      <div class="field">
+        <label>Base estatística</label>
+        <select id="ms_base">
+          <option value="50">Últimos 50</option>
+          <option value="100" selected>Últimos 100</option>
+          <option value="200">Últimos 200</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Modo (A/B/C)</label>
+        <select id="ms_mode">
+          <option value="A" selected>A • Freq + Recência</option>
+          <option value="B">B • Só Frequência</option>
+          <option value="C">C • + Padrões</option>
+        </select>
+      </div>
+      <div class="field"><label>Intensidade</label><input id="ms_int" type="number" min="0" max="100" value="35"/></div>
+      <div class="field">
+        <label>Bloquear Top repetidas</label>
+        <select id="ms_block">
+          <option value="0" selected>Não bloquear</option>
+          <option value="5">Top 5 (seguro)</option>
+          <option value="8">Top 8 (meio termo)</option>
+          <option value="10">Top 10 (restritivo)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Paridade</label>
+        <select id="ms_parity">
+          <option value="any" selected>Qualquer</option>
+          <option value="balanced">Equilibrado</option>
+          <option value="more_even">Mais pares</option>
+          <option value="more_odd">Mais ímpares</option>
+        </select>
+        <div class="parity-custom">
+          <div class="field mini">
+            <label>Pares</label>
+            <input id="ms_even" type="number" min="0" step="1" placeholder="(opcional)"/>
+          </div>
+          <div class="field mini">
+            <label>Ímpares</label>
+            <input id="ms_odd" type="number" min="0" step="1" placeholder="(opcional)"/>
+          </div>
+        </div>
+          <div class="field mini">
+            <label>Tolerância (±)</label>
+            <select id="ms_tol">
+              <option value="0">0</option>
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div class="muted" id="ms_parity_hint" style="margin-top:8px;"></div>
+        <small class="muted">Deixe em branco para não travar por paridade. Se preencher, a soma deve bater com o tamanho do jogo.</small>
+
+      </div>
+
+      <div class="field">
+        <label>Não bloquear se falhar</label>
+        <div class="actions-inline">
+          <input type="checkbox" id="ms_autoRelax" checked style="transform: translateY(2px);"/>
+          <span id="ms_relaxChip" class="chip chip-mini"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row relax-row" style="margin-top:10px;">
+      <span class="muted">Auto-relax afrouxa restrições quando necessário (evita travar).</span>
+      <span id="ms_relaxBadge" class="chip"></span>
+    </div>
+
+    <div class="actions-centered" style="margin-top:14px;">
+      <button class="btn primary" id="ms_gen">✨ Gerar jogos</button>
+      <button class="btn gold" id="ms_suggest">🏆 Sugestões Top 5</button>
+      <button class="btn" id="ms_copy" disabled>📋 Copiar</button>
+      <button class="btn" id="ms_txt" disabled>Salvar TXT</button>
+      <button class="btn" id="ms_csv" disabled>Salvar CSV</button>
+      <button class="btn emerald" id="ms_save" disabled>🗃️ Registrar</button>
+    </div>
+
+    <div class="kpis" id="ms_kpis"></div>
+    <pre id="ms_out">Clique em “Gerar jogos”.</pre>
+    <p class="muted" id="ms_note"></p>
+  </section>
+</div>
+
+<section class="card" style="margin-top:16px;">
+  <h3>3) Sugestões Top 5</h3>
+  <p class="muted">Ordenadas por score; “aderência” é percentil comparativo.</p>
+  <div id="ms_top5" class="grid2" style="grid-template-columns:1fr 1fr; gap:12px;"></div>
+</section>
+
+<section class="card" style="margin-top:16px;">
+  <h3>Último resultado</h3>
+  <div class="kpis" id="ms_latest"></div>
+</section>
+    </section>
+
+    <section class="panel" id="ms_panel_last">
+      <div class="card">
+        <h3>🕘 Últimos Resultados</h3>
+        <div class="row">
+          <div class="field">
+            <label>Quantidade</label>
+            <input id="ms_last_n" type="number" min="5" max="200" value="30"/>
+          </div>
+          <button class="btn gold" id="ms_last_run">Atualizar</button>
+          <button class="btn" id="ms_last_copy">📋 Copiar</button>
+          <button class="btn" id="ms_last_csv">Salvar CSV</button>
+        </div>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table class="data-table">
+            <thead>
+              <tr><th>Concurso</th><th>Data</th><th>Dezenas</th></tr>
+            </thead>
+            <tbody id="ms_last_body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_desd">
+      <div class="card">
+        <h3>🧩 Desdobramentos</h3>
+        <p class="muted">Informe um conjunto base (ex.: 8–15 dezenas) e gere combinações de K (Mega permite 6–15).</p>
+        <div class="row">
+          <div class="field" style="flex:1; min-width:260px;">
+            <label>Conjunto base (espaço/virgula)</label>
+            <input id="ms_desd_base" placeholder="Ex.: 1,2,3,4,5,6,7,8"/>
+          </div>
+          <div class="field">
+            <label>K</label>
+            <input id="ms_desd_k" type="number" min="6" max="15" value="6"/>
+          </div>
+          <div class="field">
+            <label>Limite</label>
+            <input id="ms_desd_lim" type="number" min="10" max="1000" value="200"/>
+          </div>
+          <button class="btn gold" id="ms_desd_run">Gerar</button>
+        </div>
+        <pre id="ms_desd_out">Defina o conjunto base e clique em “Gerar”.</pre>
+        <div class="row">
+          <button class="btn" id="ms_desd_copy">📋 Copiar</button>
+          <button class="btn" id="ms_desd_txt">Salvar TXT</button>
+          <button class="btn emerald" id="ms_desd_save">🗃️ Registrar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_fech">
+      <div class="card">
+        <h3>🧠 Fechamentos</h3>
+        <p class="muted">Heurística: cria jogos cobrindo o máximo possível do conjunto base (prioriza números menos usados).</p>
+        <div class="row">
+          <div class="field" style="flex:1; min-width:260px;">
+            <label>Conjunto base</label>
+            <input id="ms_fech_base" placeholder="Ex.: 1,2,3,..."/>
+          </div>
+          <div class="field">
+            <label>K</label>
+            <input id="ms_fech_k" type="number" min="6" max="15" value="6"/>
+          </div>
+          <div class="field">
+            <label>Jogos</label>
+            <input id="ms_fech_qtd" type="number" min="2" max="80" value="10"/>
+          </div>
+          <button class="btn gold" id="ms_fech_run">Gerar</button>
+        </div>
+        <pre id="ms_fech_out">Defina o conjunto base e clique em “Gerar”.</pre>
+        <div class="row">
+          <button class="btn" id="ms_fech_copy">📋 Copiar</button>
+          <button class="btn" id="ms_fech_txt">Salvar TXT</button>
+          <button class="btn emerald" id="ms_fech_save">🗃️ Registrar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_pos">
+      <div class="card">
+        <h3>🎯 Fechamentos por Faixas (1–10, 11–20, ... 51–60)</h3>
+        <p class="muted">Defina quantas dezenas devem sair por faixa (a soma deve fechar em K).</p>
+        <div class="row" style="flex-wrap:wrap;">
+          <div class="field"><label>K</label><input id="ms_pos_k" type="number" min="6" max="15" value="6"/></div>
+          <div class="field"><label>Jogos</label><input id="ms_pos_qtd" type="number" min="2" max="80" value="10"/></div>
+          <div class="field"><label>F1 (1–10)</label><input id="ms_pos_f1" type="number" min="0" max="10" value="1"/></div>
+          <div class="field"><label>F2 (11–20)</label><input id="ms_pos_f2" type="number" min="0" max="10" value="1"/></div>
+          <div class="field"><label>F3 (21–30)</label><input id="ms_pos_f3" type="number" min="0" max="10" value="1"/></div>
+          <div class="field"><label>F4 (31–40)</label><input id="ms_pos_f4" type="number" min="0" max="10" value="1"/></div>
+          <div class="field"><label>F5 (41–50)</label><input id="ms_pos_f5" type="number" min="0" max="10" value="1"/></div>
+          <div class="field"><label>F6 (51–60)</label><input id="ms_pos_f6" type="number" min="0" max="10" value="1"/></div>
+          <button class="btn gold" id="ms_pos_run">Gerar</button>
+        </div>
+        <pre id="ms_pos_out">Clique em “Gerar” para criar jogos com a distribuição escolhida.</pre>
+        <div class="row">
+          <button class="btn" id="ms_pos_copy">📋 Copiar</button>
+          <button class="btn" id="ms_pos_txt">Salvar TXT</button>
+          <button class="btn emerald" id="ms_pos_save">🗃️ Registrar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_mov">
+      <div class="card">
+        <h3>📈 Tabela de Movimentação</h3>
+        <p class="muted">Compara frequência em duas janelas (ex.: últimos 50 vs últimos 200).</p>
+        <div class="row">
+          <div class="field"><label>Janela A</label><input id="ms_mov_a" type="number" min="20" max="3000" value="50"/></div>
+          <div class="field"><label>Janela B</label><input id="ms_mov_b" type="number" min="20" max="3000" value="200"/></div>
+          <button class="btn gold" id="ms_mov_run">Atualizar</button>
+          <button class="btn" id="ms_mov_csv">Salvar CSV</button>
+        </div>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table class="data-table">
+            <thead><tr><th>Dezena</th><th>Freq A</th><th>Freq B</th><th>Δ (A-B)</th><th>Tendência</th></tr></thead>
+            <tbody id="ms_mov_body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_ind">
+      <div class="card">
+        <h3>🧾 Movimentação da Independência</h3>
+        <p class="muted">Aqui “independentes” = maior atraso e frequência abaixo da mediana na base.</p>
+        <div class="row">
+          <div class="field"><label>Base</label><input id="ms_ind_base" type="number" min="50" max="3000" value="200"/></div>
+          <button class="btn gold" id="ms_ind_run">Atualizar</button>
+          <button class="btn" id="ms_ind_csv">Salvar CSV</button>
+        </div>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table class="data-table">
+            <thead><tr><th>Dezena</th><th>Frequência</th><th>Atraso</th><th>Independência</th><th>Último concurso</th></tr></thead>
+            <tbody id="ms_ind_body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_cic">
+      <div class="card">
+        <h3>🔁 Ciclos Alternativos</h3>
+        <p class="muted">Um ciclo é concluído quando as 60 dezenas já apareceram ao menos uma vez desde o início do ciclo.</p>
+        <div class="row">
+          <div class="field"><label>Base</label><input id="ms_cic_base" type="number" min="200" max="6000" value="3000"/></div>
+          <button class="btn gold" id="ms_cic_run">Calcular</button>
+        </div>
+        <div class="kpis" id="ms_cic_kpis"></div>
+        <pre id="ms_cic_out">Clique em “Calcular”.</pre>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_easy">
+      <div class="card">
+        <h3>✨ Dezena Fácil</h3>
+        <p class="muted">Sugestões rápidas misturando “quentes” (frequentes) + “frias” (atrasadas) + aleatórias.</p>
+        <div class="row">
+          <div class="field"><label>Jogos</label><input id="ms_easy_qtd" type="number" min="1" max="80" value="10"/></div>
+          <div class="field"><label>K</label><input id="ms_easy_k" type="number" min="6" max="15" value="6"/></div>
+          <div class="field"><label>Quentes</label><input id="ms_easy_hot" type="number" min="0" max="15" value="3"/></div>
+          <div class="field"><label>Frias</label><input id="ms_easy_cold" type="number" min="0" max="15" value="3"/></div>
+          <button class="btn gold" id="ms_easy_run">Gerar</button>
+        </div>
+        <pre id="ms_easy_out">Clique em “Gerar”.</pre>
+        <div class="row">
+          <button class="btn" id="ms_easy_copy">📋 Copiar</button>
+          <button class="btn" id="ms_easy_txt">Salvar TXT</button>
+          <button class="btn emerald" id="ms_easy_save">🗃️ Registrar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_resumo">
+      <div class="card">
+        <h3>🧾 Tabela Resumida</h3>
+        <p class="muted">Frequência + atraso (última ocorrência) para cada dezena na base selecionada.</p>
+        <div class="row">
+          <div class="field"><label>Base</label><input id="ms_res_base" type="number" min="50" max="6000" value="200"/></div>
+          <button class="btn gold" id="ms_res_run">Atualizar</button>
+          <button class="btn" id="ms_res_csv">Salvar CSV</button>
+        </div>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table class="data-table">
+            <thead><tr><th>Dezena</th><th>Frequência</th><th>Último concurso</th><th>Atraso</th></tr></thead>
+            <tbody id="ms_res_body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_pad">
+      <div class="card">
+        <h3>📊 Estatísticas dos Padrões</h3>
+        <p class="muted">Resumo: repetidas vs concurso anterior, pares/ímpares e faixa de soma.</p>
+        <div class="row">
+          <div class="field"><label>Base</label><input id="ms_pad_base" type="number" min="50" max="6000" value="1000"/></div>
+          <button class="btn gold" id="ms_pad_run">Calcular</button>
+        </div>
+        <div class="kpis" id="ms_pad_kpis"></div>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table class="data-table">
+            <thead><tr><th>Padrão</th><th>Ocorrências</th><th>%</th><th>Última ocorrência</th></tr></thead>
+            <tbody id="ms_pad_body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_lin">
+      <div class="card">
+        <h3>🧮 Estatísticas das Linhas</h3>
+        <p class="muted">Distribuição de quantas dezenas saem por linha (1–10, 11–20, 21–30, 31–40, 41–50, 51–60).</p>
+        <div class="row">
+          <div class="field"><label>Base</label><input id="ms_lin_base" type="number" min="50" max="6000" value="1000"/></div>
+          <button class="btn gold" id="ms_lin_run">Calcular</button>
+        </div>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table class="data-table">
+            <thead><tr><th>Linha</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+            <tbody id="ms_lin_body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="ms_panel_col">
+      <div class="card">
+        <h3>🧱 Estatísticas das Colunas</h3>
+        <p class="muted">Distribuição de quantas dezenas saem por coluna (10 colunas: {"1,11,21,31,41,51"...}).</p>
+        <div class="row">
+          <div class="field"><label>Base</label><input id="ms_col_base" type="number" min="50" max="6000" value="1000"/></div>
+          <button class="btn gold" id="ms_col_run">Calcular</button>
+        </div>
+        <div class="table-wrap" style="margin-top:10px;">
+          <table class="data-table">
+            <thead><tr><th>Coluna</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+            <tbody id="ms_col_body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+</main>
+
+  <footer class="site-footer">
+  <div class="container foot">
+    <div class="container">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;">
+      <div>© 2026 <b>Mestre da Loteria – Sorte Certa</b> • Ferramenta de organização e simulação.</div>
+      <div class="muted">Dica: o histórico é atualizado automaticamente via GitHub Actions. Se estiver vazio, rode o workflow uma vez em Actions.</div>
+    </div>
+      </div>
+    </div>
+</footer>
+
+  <script type="module">
+    import { toast } from "./assets/common.js";
+    if (location.protocol === "file:") {
+      toast("warn","Dica","Abra via servidor local: python -m http.server 8000", 6500);
+    }
+  </script>
+  <!-- Prime Loader Overlay -->
+  <div id="prime_overlay" class="prime-overlay" aria-hidden="true">
+    <div class="prime-modal">
+      <div class="prime-figure">
+        <div class="prime-fill" id="prime_fill"></div>
+        <img src="./assets/figure.svg" alt="" / loading="lazy"/>
+      </div>
+      <div class="prime-pct" id="prime_pct">0%</div>
+      <div class="prime-title" id="prime_title">Carregando…</div>
+      <div class="prime-sub" id="prime_sub">Aguarde</div>
+      <div class="prime-hint muted" id="prime_hint"></div>
+    </div>
+  </div>
+<script type="module" src="./assets/megasena.js"></script>
+
+  
+
+  <script defer src="./assets/layout.js"></script>
+
+
+</html>

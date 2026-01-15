@@ -1,0 +1,139 @@
+name: Atualizar resultados Loterias CAIXA (latest + histórico)
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # a cada 30 min (UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: atualizar-loterias
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar pastas
+        run: |
+          set -e
+          mkdir -p docs/api tmp docs/data
+
+      - name: Baixar resultados (latest) para tmp/ (com retry + validação)
+        run: |
+          set -e
+          BASE="https://servicebus2.caixa.gov.br/portaldeloterias/api"
+
+          LOTS=(megasena lotofacil quina lotomania timemania duplasena federal loteca diasorte supersete maismilionaria)
+
+          for LOT in "${LOTS[@]}"; do
+            echo "Baixando: $LOT"
+            curl --retry 5 --retry-delay 2 --retry-all-errors -fsS               "$BASE/$LOT" -H "Accept: application/json" -o "tmp/$LOT.json"
+            jq -e . "tmp/$LOT.json" >/dev/null
+          done
+
+      - name: Publicar latest em api/
+        run: |
+          set -e
+          for f in tmp/*.json; do
+            name="$(basename "$f")"
+            mv "$f" "docs/api/$name"
+          done
+
+      - name: Atualizar histórico incremental em data/ (append só se concurso mudou)
+        run: |
+          set -e
+          TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          KEEP=1200  # manter últimos X concursos por modalidade
+
+          update_history () {
+            LOT="$1"
+            SRC="docs/api/${LOT}.json"
+            DST="docs/data/history_${LOT}.json"
+
+            ITEM="$(jq -c '{
+              concurso: ((.numero // .concurso // .concursoNumero) | tonumber),
+              data: (.dataApuracao // .data // ""),
+              dezenas: ( ((.listaDezenas? // .dezenas?) // []) | map(tonumber) ),
+              raw: (if ((.listaDezenas? // .dezenas?) != null) then null else . end)
+            }' "$SRC")"
+
+            CONC="$(echo "$ITEM" | jq -r '.concurso')"
+            if [ -z "$CONC" ] || [ "$CONC" = "null" ]; then
+              echo "Sem concurso em $LOT. Pulando."
+              return 0
+            fi
+
+            if [ ! -f "$DST" ]; then
+              jq -n --arg lot "$LOT" --arg ts "$TS" --argjson item "$ITEM" --argjson keep "$KEEP" '{
+                loteria: $lot,
+                updatedAtUTC: $ts,
+                lastConcurso: $item.concurso,
+                maxKeep: $keep,
+                items: [ $item ]
+              }' > "$DST"
+              return 0
+            fi
+
+            LAST="$(jq -r '.lastConcurso // 0' "$DST")"
+
+            if [ "$CONC" -le "$LAST" ]; then
+              jq --arg ts "$TS" '.updatedAtUTC=$ts' "$DST" > "$DST.tmp" && mv "$DST.tmp" "$DST"
+              return 0
+            fi
+
+            jq --arg ts "$TS" --argjson item "$ITEM" --argjson keep "$KEEP" '
+              .updatedAtUTC=$ts
+              | .items += [$item]
+              | .items |= (if (length > $keep) then .[(length-$keep):] else . end)
+              | .lastConcurso = $item.concurso
+            ' "$DST" > "$DST.tmp" && mv "$DST.tmp" "$DST"
+          }
+
+          LOTS=(megasena lotofacil quina lotomania timemania duplasena federal loteca diasorte supersete maismilionaria)
+          for LOT in "${LOTS[@]}"; do
+            update_history "$LOT"
+          done
+
+      - name: Gerar api/latest.json (bundle com tudo)
+        run: |
+          set -e
+          TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          KEEP=1200  # manter últimos X concursos por modalidade
+
+          jq -n --arg updatedAtUTC "$TS"             --slurpfile megasena docs/api/megasena.json             --slurpfile lotofacil docs/api/lotofacil.json             --slurpfile quina docs/api/quina.json             --slurpfile lotomania docs/api/lotomania.json             --slurpfile timemania docs/api/timemania.json             --slurpfile duplasena docs/api/duplasena.json             --slurpfile federal docs/api/federal.json             --slurpfile loteca docs/api/loteca.json             --slurpfile diasorte docs/api/diasorte.json             --slurpfile supersete docs/api/supersete.json             --slurpfile maismilionaria docs/api/maismilionaria.json             '{
+              updatedAtUTC: $updatedAtUTC,
+              megasena: $megasena[0],
+              lotofacil: $lotofacil[0],
+              quina: $quina[0],
+              lotomania: $lotomania[0],
+              timemania: $timemania[0],
+              duplasena: $duplasena[0],
+              federal: $federal[0],
+              loteca: $loteca[0],
+              diasorte: $diasorte[0],
+              supersete: $supersete[0],
+              maismilionaria: $maismilionaria[0]
+            }' > docs/api/latest.json
+
+      - name: Commitar alterações (somente se mudou)
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add docs/api/*.json docs/data/history_*.json
+
+          if git diff --cached --quiet; then
+            echo "Sem mudanças. Nada a commitar."
+            exit 0
+          fi
+
+          git commit -m "Atualiza resultados loterias (latest + histórico)"
+          git pull --rebase
+          git push

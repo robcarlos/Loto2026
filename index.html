@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+    <meta name="theme-color" content="#006341"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mestre da Loteria – Sorte Certa</title>
+  <link rel="icon" type="image/png" href="./assets/logo.png"/>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="bg-wealth" aria-hidden="true"></div>
+
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="./index.html" title="Voltar ao Início">
+      <span class="brand-mark"><img src="./assets/logo.png" alt="Mestre da Loteria" width="120" height="120"/></span>
+      <span class="brand-text">
+        <span class="brand-title">Mestre da Loteria</span>
+        <span class="brand-sub">Sorte Certa</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-nav">☰</button>
+
+    <nav id="site-nav" class="site-nav">
+      <a href="./index.html">🏠 Início</a>
+      <a href="./megasena.html">🎰 Mega-Sena</a>
+      <a href="./lotofacil.html">🍀 Lotofácil</a>
+      <a href="./estatisticas.html">📊 Estatísticas</a>
+      <a href="./jogos.html">🗃️ Meus Jogos</a>
+      <a href="./contato.html">✉️ Contato</a>
+    </nav>
+  </div>
+  <div class="tricolor-ribbon" aria-hidden="true"></div>
+</header>
+
+<main class="container page">
+    
+<section class="hero">
+  <div class="sparkle-layer" aria-hidden="true"></div>
+  <h2>Gerador premium com estatística e visual de luxo</h2>
+  <p>Gere combinações para <b>Mega-Sena</b> e <b>Lotofácil</b> com modos A/B/C, seleção por grade, Top 5 e percentil de aderência.</p>
+  <div class="actions-centered" style="margin-top:14px;">
+    <a class="btn primary" href="./megasena.html">🎰 Abrir Mega-Sena</a>
+    <a class="btn gold" href="./lotofacil.html">🍀 Abrir Lotofácil</a>
+    <a class="btn" href="./estatisticas.html">📊 Estatísticas</a>
+  </div>
+  <div class="kpis">
+    <div class="pill">Mega: <b>1–60</b> (6–15)</div>
+    <div class="pill">Lotofácil: <b>1–25</b> (15–20)</div>
+    <div class="pill">Modos: <b>A/B/C</b></div>
+    <div class="pill">Auto-relax: <b>ON/OFF</b></div>
+  </div>
+</section>
+
+<div class="grid2" style="margin-top:16px;">
+  <section class="card">
+    <h3>Como usar</h3>
+    <ol class="muted" style="line-height:1.7; margin-top:8px;">
+      <li>Abra Mega-Sena ou Lotofácil.</li>
+      <li>Fixe dezenas na grade (opcional).</li>
+      <li>Escolha modo, base e intensidade.</li>
+      <li>Gere jogos e use Top 5 para sugestões.</li>
+      <li>Copie ou exporte TXT/CSV.</li>
+    </ol>
+    <hr class="sep"/>
+    <p class="muted">“Aderência histórica” é comparativa (percentil), não garantia de prêmio.</p>
+  </section>
+
+  <section class="card">
+    <h3>Atalhos</h3>
+    <div class="actions-centered" style="margin-top:10px;">
+      <a class="btn primary" href="./megasena.html">🎰 Gerar Mega</a>
+      <a class="btn gold" href="./lotofacil.html">🍀 Gerar Lotofácil</a>
+      <a class="btn" href="./sobre.html">ℹ️ Sobre</a>
+      <a class="btn" href="./contato.html">✉️ Contato</a>
+    </div>
+    <hr class="sep"/>
+    <div class="muted"><b>Dica:</b> modo A + intensidade 25–40 + base 100 funciona bem para “curadoria” sem travar.</div>
+  </section>
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="container foot">
+    <div class="container">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;">
+      <div>© 2026 <b>Mestre da Loteria – Sorte Certa</b> • Ferramenta de organização e simulação.</div>
+      <div class="muted">Dica: o histórico é atualizado automaticamente via GitHub Actions. Se estiver vazio, rode o workflow uma vez em Actions.</div>
+    </div>
+      </div>
+    </div>
+</footer>
+
+  <script type="module">
+    import { toast } from "./assets/common.js";
+    if (location.protocol === "file:") {
+      toast("warn","Dica","Abra via servidor local: python -m http.server 8000", 6500);
+    }
+  </script>
+  
+  <script defer src="./assets/layout.js"></script>
+
+
+</html>

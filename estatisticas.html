@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+    <meta name="theme-color" content="#006341"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Estatísticas — Mestre da Loteria – Sorte Certa</title>
+  <link rel="icon" type="image/png" href="./assets/logo.png"/>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="bg-wealth" aria-hidden="true"></div>
+
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="./index.html" title="Voltar ao Início">
+      <span class="brand-mark"><img src="./assets/logo.png" alt="Mestre da Loteria" width="120" height="120"/></span>
+      <span class="brand-text">
+        <span class="brand-title">Mestre da Loteria</span>
+        <span class="brand-sub">Sorte Certa</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-nav">☰</button>
+
+    <nav id="site-nav" class="site-nav">
+      <a href="./index.html">🏠 Início</a>
+      <a href="./megasena.html">🎰 Mega-Sena</a>
+      <a href="./lotofacil.html">🍀 Lotofácil</a>
+      <a href="./estatisticas.html">📊 Estatísticas</a>
+      <a href="./jogos.html">🗃️ Meus Jogos</a>
+      <a href="./contato.html">✉️ Contato</a>
+    </nav>
+  </div>
+  <div class="tricolor-ribbon" aria-hidden="true"></div>
+</header>
+
+<main class="container page">
+    
+<section class="hero">
+  <div class="sparkle-layer" aria-hidden="true"></div>
+  <h2>📊 Estatísticas</h2>
+  <p class="muted">Frequência e recência por dezenas (API com fallback offline).</p>
+<div class="hero-nav" role="navigation" aria-label="Atalhos das análises">
+  <a class="hero-btn" href="#freq">📊 Frequência &amp; Recência</a>
+  <a class="hero-btn" href="#rep">🔁 Padrão das Repetidas</a>
+  <a class="hero-btn" href="#top">🎯 Dezenas mais sorteadas</a>
+  <a class="hero-btn" href="#par">⚖️ Pares &amp; Ímpares</a>
+</div>
+</section>
+
+<section class="card" style="margin-top:16px;">
+  <div class="row">
+    <div class="field">
+      <label>Modalidade</label>
+      <select id="st_game">
+        <option value="megasena" selected>Mega-Sena</option>
+        <option value="lotofacil">Lotofácil</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Base (últimos N)</label>
+      <select id="st_base">
+        <option value="50">50</option>
+        <option value="100" selected>100</option>
+        <option value="200">200</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+        <option value="all">Todo histórico</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Top</label>
+      <select id="st_top">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="50">50</option>
+        <option value="100" selected>100</option>
+      </select>
+    </div>
+    
+    <div class="field">
+      <label>Concurso (opcional)</label>
+      <input id="st_concurso" type="number" min="1" step="1" placeholder="Ex.: 2750" />
+    </div>
+
+    <button class="btn primary" id="st_run">Atualizar</button>
+    <button class="btn" id="st_csv" disabled>Exportar CSV</button>
+  </div>
+
+  <div class="kpis" id="st_kpis"></div>
+
+<div class="stats-subnav" aria-label="Seções de estatísticas">
+  <a class="pill" href="#freq">📊 Frequência &amp; Recência</a>
+  <a class="pill" href="#rep">🔁 Repetidas</a>
+  <a class="pill" href="#top">🎯 Mais sorteadas</a>
+  <a class="pill" href="#par">⚖️ Pares &amp; Ímpares</a>
+</div>
+
+  <div class="stats-stack" style="margin-top:14px;">
+    <section id="freq" class="stats-card accent-green">
+      <div class="stats-card-head">
+        <div class="stats-card-title">📊 Frequência e Recência</div>
+        <div class="stats-card-sub muted">Ordene por frequência, atraso (recência) e veja tendência ↑↓ (janela base vs anterior).</div>
+      </div>
+
+      <div class="card" style="padding:12px;">
+        <canvas id="st_canvas" class="chart-canvas"></canvas>
+      </div>
+
+      <div class="table-wrap" style="margin-top:10px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-sort="n">Dezena</th>
+              <th data-sort="count">Frequência</th>
+              <th data-sort="delay"><span class="tip" data-tip="Atraso atual = quantos concursos se passaram desde a última vez que a dezena apareceu.">Atraso atual</span></th>
+              <th data-sort="trend"><span class="tip" data-tip="Tendência compara a frequência na base atual com a janela anterior do mesmo tamanho.">Tendência</span></th>
+            </tr>
+          </thead>
+          <tbody id="st_heat_body"></tbody>
+        </table>
+      </div>
+
+      <div class="row" style="margin-top:10px; gap:10px; flex-wrap:wrap;">
+        <button class="btn" id="st_copy_heat">📋 Copiar tabela</button>
+        <button class="btn" id="st_excel" disabled>Exportar Excel</button>
+      </div>
+    </section>
+
+    <section id="rep" class="stats-card accent-red">
+      <div class="stats-card-head">
+        <div class="stats-card-title">🔁 Padrão das Repetidas</div>
+        <div class="stats-card-sub muted">Comparação com o concurso anterior. Use o gráfico para ver os maiores atrasos.</div>
+      </div>
+
+      <div class="card" style="padding:12px;">
+        <canvas id="st_rep_canvas" class="chart-canvas" style="height:260px;"></canvas>
+      </div>
+
+      <div class="table-wrap" style="margin-top:10px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Qtd Repetidas</th>
+              <th>Ocorrências</th>
+              <th>Atraso</th>
+              <th>Última ocorrência</th>
+            </tr>
+          </thead>
+          <tbody id="st_rep_body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="top" class="stats-card accent-gold">
+      <div class="stats-card-head">
+        <div class="stats-card-title">🎯 Dezenas mais sorteadas</div>
+        <div class="stats-card-sub muted">Ranking visual (Top selecionado). As 3 primeiras ficam destacadas.</div>
+      </div>
+
+      <div class="rank" id="st_rank"></div>
+
+      <div class="table-wrap" style="margin-top:10px;">
+        <div class="row" style="justify-content:space-between;align-items:center;margin-top:8px;gap:10px;flex-wrap:wrap;"><div class="muted" id="st_top_label">Mostrando Top (atualizado)</div></div><table class="data-table" id="st_topnums_table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Dezena</th>
+              <th>Frequência</th>
+              <th>%</th>
+              <th>Atraso</th>
+              <th>Tendência</th>
+            </tr>
+          </thead>
+          <tbody id="st_topnums_body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="par" class="stats-card accent-blue">
+      <div class="stats-card-head">
+        <div class="stats-card-title">⚖️ Pares e Ímpares</div>
+        <div class="stats-card-sub muted">Proporção geral + média histórica por concurso (base selecionada).</div>
+      </div>
+
+      <div class="card" style="padding:12px;">
+        <canvas id="st_par_pie" class="chart-canvas" style="height:260px;"></canvas>
+      </div>
+
+      <div class="kpis" id="st_par_kpis" style="margin-top:10px;"></div>
+
+      <div class="table-wrap" style="margin-top:10px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Qtd Pares</th>
+              <th>Qtd Ímpares</th>
+              <th>Ocorrências</th>
+              <th>Atraso</th>
+              <th>%</th>
+              <th>Última ocorrência</th>
+            </tr>
+          </thead>
+          <tbody id="st_par_body"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+</section>
+
+  <section class="stats-section" style="margin-top:14px;">
+    <div class="stats-head">
+      <h3>🔥 Dezenas mais Sorteadas</h3>
+      <p class="muted">Mostra as dezenas que mais saíram na base selecionada.</p>
+    </div>
+    <div class="table-wrap">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-top:8px;gap:10px;flex-wrap:wrap;"><div class="muted" id="st_top_label">Mostrando Top (atualizado)</div></div><table class="data-table" id="st_topnums_table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Dezena</th>
+              <th>Frequência</th>
+              <th>%</th>
+              <th>Atraso</th>
+              <th>Tendência</th>
+            </tr>
+          </thead>
+        <tbody id="st_topnums_body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="stats-section" style="margin-top:14px;">
+    <div class="stats-head">
+      <h3>⚖️ Padrão de Pares e Ímpares</h3>
+      <p class="muted">Mostra a distribuição (pares/ímpares) que aconteceu nos concursos (na base selecionada).</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Qtd Pares</th>
+            <th>Qtd Ímpares</th>
+            <th>Ocorrências</th>
+            <th>Atraso atual</th>
+            <th>Porcentagem</th>
+            <th>Média de ocorrência</th>
+            <th>Última ocorrência</th>
+          </tr>
+        </thead>
+        <tbody id="st_par_body"></tbody>
+      </table>
+    </div>
+  </section>
+
+</section>
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="container foot">
+    <div class="container">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;">
+      <div>© 2026 <b>Mestre da Loteria – Sorte Certa</b> • Ferramenta de organização e simulação.</div>
+      <div class="muted">Dica: o histórico é atualizado automaticamente via GitHub Actions. Se estiver vazio, rode o workflow uma vez em Actions.</div>
+    </div>
+      </div>
+    </div>
+</footer>
+
+  <script type="module">
+    import { toast } from "./assets/common.js";
+    if (location.protocol === "file:") {
+      toast("warn","Dica","Abra via servidor local: python -m http.server 8000", 6500);
+    }
+  </script>
+  <script type="module" src="./assets/estatisticas.js"></script>
+  <script defer src="./assets/layout.js"></script>
+
+
+</html>

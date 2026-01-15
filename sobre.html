@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+    <meta name="theme-color" content="#006341"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sobre — Mestre da Loteria – Sorte Certa</title>
+  <link rel="icon" type="image/png" href="./assets/logo.png"/>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="bg-wealth" aria-hidden="true"></div>
+
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="./index.html" title="Voltar ao Início">
+      <span class="brand-mark"><img src="./assets/logo.png" alt="Mestre da Loteria" width="120" height="120"/></span>
+      <span class="brand-text">
+        <span class="brand-title">Mestre da Loteria</span>
+        <span class="brand-sub">Sorte Certa</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-nav">☰</button>
+
+    <nav id="site-nav" class="site-nav">
+      <a href="./index.html">🏠 Início</a>
+      <a href="./megasena.html">🎰 Mega-Sena</a>
+      <a href="./lotofacil.html">🍀 Lotofácil</a>
+      <a href="./estatisticas.html">📊 Estatísticas</a>
+      <a href="./jogos.html">🗃️ Meus Jogos</a>
+      <a href="./contato.html">✉️ Contato</a>
+    </nav>
+  </div>
+  <div class="tricolor-ribbon" aria-hidden="true"></div>
+</header>
+
+<main class="container page">
+    
+<section class="hero">
+  <div class="sparkle-layer" aria-hidden="true"></div>
+  <h2>Sobre</h2>
+  <p class="muted">Ferramenta de simulação e organização. Score/percentil ajudam a comparar padrões estatísticos — sem prometer acerto.</p>
+</section>
+<section class="card" style="margin-top:16px;">
+  <h3>Aderência histórica (%)</h3>
+  <p class="muted">Percentil do score do seu jogo versus uma amostra de jogos aleatórios com as mesmas regras.</p>
+</section>
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="container foot">
+    <div class="container">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;">
+      <div>© 2026 <b>Mestre da Loteria – Sorte Certa</b> • Ferramenta de organização e simulação.</div>
+      <div class="muted">Dica: o histórico é atualizado automaticamente via GitHub Actions. Se estiver vazio, rode o workflow uma vez em Actions.</div>
+    </div>
+      </div>
+    </div>
+</footer>
+
+  <script type="module">
+    import { toast } from "./assets/common.js";
+    if (location.protocol === "file:") {
+      toast("warn","Dica","Abra via servidor local: python -m http.server 8000", 6500);
+    }
+  </script>
+  
+  <script defer src="./assets/layout.js"></script>
+
+
+</html>

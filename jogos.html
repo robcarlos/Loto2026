@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+    <meta name="theme-color" content="#006341"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Meus Jogos — Mestre da Loteria</title>
+  <link rel="icon" type="image/png" href="./assets/logo.png"/>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="bg-wealth" aria-hidden="true"></div>
+
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="./index.html" title="Voltar ao Início">
+      <span class="brand-mark"><img src="./assets/logo.png" alt="Mestre da Loteria" width="120" height="120"/></span>
+      <span class="brand-text">
+        <span class="brand-title">Mestre da Loteria</span>
+        <span class="brand-sub">Sorte Certa</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-nav">☰</button>
+
+    <nav id="site-nav" class="site-nav">
+      <a href="./index.html">🏠 Início</a>
+      <a href="./megasena.html">🎰 Mega-Sena</a>
+      <a href="./lotofacil.html">🍀 Lotofácil</a>
+      <a href="./estatisticas.html">📊 Estatísticas</a>
+      <a href="./jogos.html">🗃️ Meus Jogos</a>
+      <a href="./contato.html">✉️ Contato</a>
+    </nav>
+  </div>
+  <div class="tricolor-ribbon" aria-hidden="true"></div>
+</header>
+
+<main class="container page">
+    <section class="hero compact">
+      <div class="sparkle-layer" aria-hidden="true"></div>
+      <h2>🗃️ Meus Jogos (validados)</h2>
+      <p>Registre jogos gerados, acompanhe o <b>status</b>, e confira com o <b>resultado oficial</b> quando o concurso for sorteado.</p>
+      <div class="chips">
+        <span class="chip chip-mini chip--on">Banco local</span>
+        <span class="chip chip-mini chip--off">Sem instalação</span>
+        <span class="chip chip-mini chip--on">GitHub Pages</span>
+      </div>
+    </section>
+
+    <section class="card progress-card" id="jg_progress_card" style="margin-top:14px;">
+      <div class="row" style="justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+        <div>
+          <h3 style="margin:0 0 6px;">🔄 Atualização automática (jogo do dia + conferência)</h3>
+          <p class="muted" style="margin:0;">Coleta resultados do concurso, processa estatísticas, atualiza sugestões do dia e confere jogos pendentes.</p>
+        </div>
+        <div class="row" style="gap:10px; flex-wrap:wrap; align-items:center;">
+          <button class="btn gold" id="jg_update_day">Atualizar agora</button>
+        </div>
+      </div>
+
+      <div class="progress-top">
+        <div class="progress-bar" aria-label="Progresso da atualização">
+          <div class="progress-fill" id="jg_progress_fill" style="width:0%"></div>
+        </div>
+
+        <div class="progress-status">
+          <div class="progress-steps" id="jg_progress_steps">
+            <span class="pstep pending" data-step="collect">📥 Coleta</span>
+            <span class="pstep pending" data-step="stats">🧮 Estatísticas</span>
+            <span class="pstep pending" data-step="daily">🎯 Jogos do dia</span>
+            <span class="pstep pending" data-step="final">✅ Finalização</span>
+          </div>
+
+          <div class="progress-text" id="jg_progress_text">Pronto para atualizar.</div>
+
+          <div class="progress-meta muted">
+            <span id="jg_progress_eta">~15s restantes</span>
+            <span>•</span>
+            <span id="jg_progress_last">Última atualização: —</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid two" style="margin-top:12px;">
+        <div class="card mini">
+          <h4 style="margin:0 0 8px;">🎯 Sugestões do dia</h4>
+          <pre id="jg_daily_out" style="min-height:92px;">Nenhuma atualização ainda.</pre>
+          <div class="row" style="gap:10px; flex-wrap:wrap;">
+            <button class="btn" id="jg_daily_copy">📋 Copiar</button>
+            <button class="btn" id="jg_daily_txt">Salvar TXT</button>
+            <button class="btn emerald" id="jg_daily_register">🗃️ Registrar nos meus jogos</button>
+          </div>
+        </div>
+        <div class="card mini">
+          <h4 style="margin:0 0 8px;">🧾 Log</h4>
+          <pre id="jg_progress_log" style="min-height:92px;">—</pre>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="card results-card" id="res_card" style="margin-top:14px;">
+      <div class="row" style="justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap;">
+        <div>
+          <h3 style="margin:0 0 6px;">📥 Resultados & Visualização</h3>
+          <p class="muted" style="margin:0;">Jogo atual, recentes e histórico com análises rápidas (paridade, top dezenas, heatmap de recência).</p>
+        </div>
+        <div class="row" style="gap:10px; flex-wrap:wrap; align-items:flex-end;">
+          <label class="field" style="min-width:170px;">
+            <span>Modalidade</span>
+            <select id="res_game" class="input">
+              <option value="megasena">Mega-Sena</option>
+              <option value="lotofacil">Lotofácil</option>
+            </select>
+          </label>
+
+          <label class="field" style="min-width:170px;">
+            <span>Base (últimos N)</span>
+            <select id="res_base" class="input">
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+              <option value="500">500</option>
+              <option value="1000000">Todo histórico</option>
+            </select>
+          </label>
+
+          <label class="field" style="min-width:190px;">
+            <span>Concurso (opcional)</span>
+            <input id="res_concurso" class="input" type="number" min="1" placeholder="Ex.: 3123"/>
+          </label>
+
+          <button class="btn gold" id="res_refresh">Atualizar</button>
+          <button class="btn" id="res_export_csv">CSV</button>
+          <button class="btn" id="res_export_xls">Excel</button>
+        </div>
+      </div>
+
+      <div class="results-grid" style="margin-top:12px;">
+        <div class="card current-card">
+          <div class="row" style="justify-content:space-between; align-items:center;">
+            <div>
+              <div class="badge-hot">🔥 Atual</div>
+              <div class="current-meta">
+                <div class="current-title" id="res_current_title">Concurso —</div>
+                <div class="current-sub muted" id="res_current_sub">Data —</div>
+              </div>
+            </div>
+            <div class="row" style="gap:10px;">
+              <div class="pill mini">Pares/Ímpares: <b id="res_current_par">—</b></div>
+              <div class="pill mini">Soma: <b id="res_current_sum">—</b></div>
+            </div>
+          </div>
+
+          <div class="nums-big" id="res_current_nums" style="margin-top:12px;"></div>
+
+          <div class="row" style="gap:10px; margin-top:12px; flex-wrap:wrap;">
+            <label class="field" style="min-width:180px;">
+              <span>Histórico</span>
+              <select id="res_hist_range" class="input">
+                <option value="10">Últimos 10</option>
+                <option value="20">Últimos 20</option>
+                <option value="50" selected>Últimos 50</option>
+              </select>
+            </label>
+
+            <label class="field" style="min-width:220px;">
+              <span>Buscar concurso</span>
+              <input id="res_hist_search" class="input" type="number" min="1" placeholder="Digite e pressione Enter"/>
+            </label>
+
+            <button class="btn" id="res_hist_clear">Limpar busca</button>
+          </div>
+
+          <div class="table-wrap" style="margin-top:10px;">
+            <table class="data-table striped">
+              <thead>
+                <tr>
+                  <th>Concurso</th>
+                  <th>Data</th>
+                  <th>Números</th>
+                </tr>
+              </thead>
+              <tbody id="res_recent_body"></tbody>
+            </table>
+          </div>
+
+          <div class="muted" style="margin-top:8px;" id="res_last_update">Última atualização: —</div>
+        </div>
+
+        <div class="card viz-card">
+          <div class="viz-grid">
+            <div class="viz-box">
+              <div class="viz-title">⚖️ Pares e Ímpares</div>
+              <canvas id="res_pie" width="420" height="260"></canvas>
+              <div class="muted" id="res_pie_note">—</div>
+            </div>
+
+            <div class="viz-box">
+              <div class="viz-title">🎯 Dezenas mais sorteadas (Top 10)</div>
+              <canvas id="res_topbars" width="420" height="280"></canvas>
+              <div class="muted">Barra maior = maior frequência na base selecionada.</div>
+            </div>
+
+            <div class="viz-box viz-heat">
+              <div class="row" style="justify-content:space-between; align-items:center;">
+                <div class="viz-title">📊 Frequência & Recência</div>
+                <div class="row" style="gap:8px; flex-wrap:wrap;">
+                  <label class="field" style="min-width:160px;">
+                    <span>Ordenar</span>
+                    <select id="res_sort" class="input">
+                      <option value="freq" selected>Frequência</option>
+                      <option value="delay">Recência/Atraso</option>
+                      <option value="trend">Tendência</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <div class="heat-legend">
+                <span class="dot green"></span>Recente
+                <span class="dot yellow"></span>Médio
+                <span class="dot red"></span>Atrasado
+                <span class="dot gray"></span>Sem dado
+              </div>
+
+              <div class="heat-grid" id="res_heatgrid"></div>
+              <div class="muted">Passe o mouse para ver <span class="tip" title="Atraso atual = concursos desde a última vez que a dezena apareceu.">Atraso</span>, <span class="tip" title="Recência é calculada por atraso (menor atraso = mais recente).">Recência</span> e tendência.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+
+    <div class="grid two">
+      <section class="card">
+        <h3>Registrar jogo</h3>
+        <p class="muted">Informe os números. A validação garante regra de cada modalidade (Mega 6–15, Lotofácil 15–20).</p>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Modalidade</span>
+            <select id="jg_game" class="input">
+              <option value="megasena">Mega-Sena</option>
+              <option value="lotofacil">Lotofácil</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Concurso de referência (opcional)</span>
+            <input id="jg_concurso" class="input" type="number" min="1" placeholder="Ex.: 2751"/>
+          </label>
+
+          <label class="field full">
+            <span>Números (separe por espaço, vírgula ou hífen)</span>
+            <textarea id="jg_nums" class="input" rows="3" placeholder="Ex.: 01 05 12 23 34 56"></textarea>
+          </label>
+
+          <label class="field full">
+            <span>Observação (opcional)</span>
+            <input id="jg_obs" class="input" type="text" placeholder="Ex.: bolão / estratégia / etc."/>
+          </label>
+        </div>
+
+        <div class="row" style="margin-top:12px; gap:10px; flex-wrap:wrap;">
+          <button class="btn primary" id="jg_add">➕ Registrar</button>
+          <button class="btn" id="jg_clear">Limpar</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Consultar / conferir</h3>
+        <div id="jg_kpi" class="kpis" style="margin:10px 0 14px;"></div>
+
+        <div class="row" style="gap:10px; flex-wrap:wrap;">
+          <label class="field" style="min-width:200px;">
+            <span>Filtro: Modalidade</span>
+            <select id="jg_f_game" class="input">
+              <option value="all">Todas</option>
+              <option value="megasena">Mega-Sena</option>
+              <option value="lotofacil">Lotofácil</option>
+            </select>
+          </label>
+
+          <label class="field" style="min-width:220px;">
+            <span>Filtro: Status</span>
+            <select id="jg_f_status" class="input">
+              <option value="all">Todos</option>
+              <option value="aguardando">Aguardando sorteio</option>
+              <option value="premiado">Premiado</option>
+              <option value="não">Não premiado</option>
+              <option value="conferido">Conferido</option>
+            </select>
+          </label>
+
+          <label class="field" style="flex:1; min-width:240px;">
+            <span>Buscar (números / concurso / texto)</span>
+            <input id="jg_f_text" class="input" type="text" placeholder="Digite para filtrar…"/>
+          </label>
+        </div>
+
+        <div class="row" style="margin-top:12px; gap:10px; flex-wrap:wrap;">
+          <button class="btn" id="jg_copy">📋 Copiar</button>
+          <button class="btn" id="jg_txt">Exportar TXT</button>
+          <button class="btn" id="jg_csv">Exportar CSV</button>
+          <button class="btn danger" id="jg_clear_all">🧹 Apagar tudo</button>
+        </div>
+
+        <div class="table-wrap" style="margin-top:14px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Modalidade</th>
+                <th>Números</th>
+                <th>Concurso</th>
+                <th>Status</th>
+                <th>Acertos</th>
+                <th>Conferido</th>
+                <th>Data sorteio</th>
+                <th>Registro</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="jg_body"></tbody>
+          </table>
+        </div>
+
+        <p class="muted" style="margin-top:10px;">
+          Dica: cadastre o <b>concurso de referência</b> para que a conferência fique mais rápida. Se não informar, o sistema pede na hora de conferir.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+  <div class="container foot">
+    <div class="wrap" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;">
+      <div>© 2026 <b>Mestre da Loteria – Sorte Certa</b> • Ferramenta de organização e simulação.</div>
+      <div class="muted">Histórico atualizado automaticamente via GitHub Actions (quando configurado).</div>
+    </div>
+    </div>
+</footer>
+
+  <script type="module" src="./assets/jogos.js"></script>
+  <script type="module">
+    import { toast } from "./assets/common.js";
+    if (location.protocol === "file:") {
+      toast("warn","Dica","Abra via servidor local: python -m http.server 8000", 6500);
+    }
+  </script>
+  <script defer src="./assets/layout.js"></script>
+
+
+</html>

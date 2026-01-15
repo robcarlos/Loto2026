@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+    <meta name="theme-color" content="#006341"/>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contato — Mestre da Loteria – Sorte Certa</title>
+  <link rel="icon" type="image/png" href="./assets/logo.png"/>
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <div class="bg-wealth" aria-hidden="true"></div>
+
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="./index.html" title="Voltar ao Início">
+      <span class="brand-mark"><img src="./assets/logo.png" alt="Mestre da Loteria" width="120" height="120"/></span>
+      <span class="brand-text">
+        <span class="brand-title">Mestre da Loteria</span>
+        <span class="brand-sub">Sorte Certa</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-nav">☰</button>
+
+    <nav id="site-nav" class="site-nav">
+      <a href="./index.html">🏠 Início</a>
+      <a href="./megasena.html">🎰 Mega-Sena</a>
+      <a href="./lotofacil.html">🍀 Lotofácil</a>
+      <a href="./estatisticas.html">📊 Estatísticas</a>
+      <a href="./jogos.html">🗃️ Meus Jogos</a>
+      <a href="./contato.html">✉️ Contato</a>
+    </nav>
+  </div>
+  <div class="tricolor-ribbon" aria-hidden="true"></div>
+</header>
+
+<main class="container page">
+    
+<section class="hero">
+  <div class="sparkle-layer" aria-hidden="true"></div>
+  <h2>Contato</h2>
+  <p class="muted">Formulário local (copia o texto). Também há botão para abrir seu e-mail.</p>
+  <div class="actions-centered" style="margin-top:14px;">
+    <a class="btn primary" href="mailto:contato@exemplo.com?subject=Mestre%20da%20Loteria%20-%20Contato">✉️ Abrir e-mail</a>
+    <a class="btn" href="./">🏠 Voltar</a>
+  </div>
+</section>
+
+<section class="card" style="margin-top:16px;">
+  <h3>Mensagem</h3>
+  <div class="row">
+    <div class="field" style="flex:1; min-width:260px;">
+      <label>Seu nome</label>
+      <input id="c_nome" placeholder="Seu nome"/>
+    </div>
+    <div class="field" style="flex:1; min-width:260px;">
+      <label>Seu e-mail</label>
+      <input id="c_email" placeholder="voce@exemplo.com"/>
+    </div>
+  </div>
+  <div class="field" style="margin-top:10px;">
+    <label>Mensagem</label>
+    <textarea id="c_msg" placeholder="Escreva sua mensagem..."></textarea>
+  </div>
+  <div class="actions-centered" style="margin-top:12px;">
+    <button class="btn gold" id="c_enviar">Enviar (copiar)</button>
+  </div>
+  <p class="muted">Nada é enviado para servidor; o conteúdo é copiado.</p>
+</section>
+
+<script type="module">
+  import { $, copyToClipboard, toast } from "./assets/common.js";
+  $("#c_enviar").addEventListener("click", async ()=>{
+    const txt = `Nome: ${$("#c_nome").value}\nEmail: ${$("#c_email").value}\n\n${$("#c_msg").value}`;
+    const r = await copyToClipboard(txt);
+    toast("ok","Mensagem pronta", r.msg);
+  });
+</script>
+
+  </main>
+
+  <footer class="site-footer">
+  <div class="container foot">
+    <div class="container">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;">
+      <div>© 2026 <b>Mestre da Loteria – Sorte Certa</b> • Ferramenta de organização e simulação.</div>
+      <div class="muted">Dica: o histórico é atualizado automaticamente via GitHub Actions. Se estiver vazio, rode o workflow uma vez em Actions.</div>
+    </div>
+      </div>
+    </div>
+</footer>
+
+  <script type="module">
+    import { toast } from "./assets/common.js";
+    if (location.protocol === "file:") {
+      toast("warn","Dica","Abra via servidor local: python -m http.server 8000", 6500);
+    }
+  </script>
+  
+  <script defer src="./assets/layout.js"></script>
+
+
+</html>
